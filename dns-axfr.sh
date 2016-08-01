@@ -2,13 +2,7 @@
 
 function dns_axfr {
     domain=$1
-    host -t ns $domain | while read nameserver; do
-        nameserver=$(echo  $nameserver | cut -d" " -f4)
-        echo "$domain: $nameserver - [zone transfer]"
-        # host -t axfr $domain $nameserver
-        host -l $domain $nameserver | grep "has address"
-    done
-
+    for nameserver in `dig $domain ns +short`; do host -l $domain $nameserver; done
 }
 
 if [ -z $1 ]; then
