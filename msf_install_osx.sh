@@ -95,8 +95,8 @@ function msfdb_init
 
   # Mac OSX default postgres username: _postgres
   createuser --pwprompt msfuser
-  psql -c "ALTER USER msfuser with ENCRYPTED PASSWORD 'msfpass';" msfdb
   createdb --owner msfuser msfdb
+  psql -c "ALTER USER msfuser with ENCRYPTED PASSWORD 'msfpass';" msfdb
 
   # sudo -u postgres createuser msfuser -dRS
   # sudo -u postgres psql -c "ALTER USER msfuser with ENCRYPTED PASSWORD 'msfpass';" msfdb
