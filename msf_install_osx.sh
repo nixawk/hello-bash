@@ -77,14 +77,14 @@ cat <<EOF> $HOME/.msf4/database.yml
 # mode and prod mode. Absent a production db, though, defaulting
 # to dev is pretty sensible for many developer-users.
 production:
-adapter: postgresql
-database: msfdb
-username: msfuser
-password: msfpass
-host: localhost
-port: 5432
-pool: 75
-timeout: 5
+  adapter: postgresql
+  database: msfdb
+  username: msfuser
+  password: msfpass
+  host: localhost
+  port: 5432
+  pool: 75
+  timeout: 5
 EOF
 }
 
@@ -93,9 +93,14 @@ function msfdb_init
 {
   postgres -D /usr/local/var/postgres/ &
 
-  sudo -u postgres createuser msfuser -dRS
-  sudo -u postgres psql -c "ALTER USER msfuser with ENCRYPTED PASSWORD 'msfpass';"
-  sudo -u postgres createdb --owner msfdev msfdb
+  # Mac OSX default postgres username: _postgres
+  createuser --pwprompt msfuser
+  psql -c "ALTER USER msfuser with ENCRYPTED PASSWORD 'msfpass';" msfdb
+  createdb --owner msfuser msfdb
+
+  # sudo -u postgres createuser msfuser -dRS
+  # sudo -u postgres psql -c "ALTER USER msfuser with ENCRYPTED PASSWORD 'msfpass';" msfdb
+  # sudo -u postgres createdb --owner msfuser msfdb
 }
 
 
